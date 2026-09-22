@@ -51,17 +51,22 @@ function renderComposer(user) {
 
 function postCardHtml(p) {
   return `
-    <div class="post-card" data-id="${p.id}">
-      <div class="post-head">
-        <a class="author" href="/profile.html?u=${encodeURIComponent(p.username)}">${escapeHtml(p.username)}</a>
-        <span class="time">${timeAgo(p.created_at)}</span>
+    <div class="card" data-id="${p.id}">
+      <div class="post-header">
+        <div class="avatar">${p.username ? escapeHtml(p.username.charAt(0).toUpperCase()) : 'U'}</div>
+        <div>
+          <a class="username" href="/profile.html?u=${encodeURIComponent(p.username)}">${escapeHtml(p.username)}</a>
+          <div class="timestamp">${timeAgo(p.created_at)}</div>
+        </div>
       </div>
       <div class="post-content">${escapeHtml(p.content)}</div>
-      <div class="post-actions">
-        <button class="like-btn ${p.likedByMe ? 'liked' : ''}" data-id="${p.id}">
-          ${p.likedByMe ? '♥' : '♡'} <span class="like-count">${p.likeCount}</span>
+      <div class="post-actions" style="margin-top: 1rem; display: flex; gap: 0.5rem; align-items: center;">
+        <button class="btn like-btn ${p.likedByMe ? 'liked' : ''}" data-id="${p.id}">
+          ${p.likedByMe ? '❤️' : '🤍'} <span class="like-count">${p.likeCount}</span>
         </button>
-        <button class="comment-toggle" data-id="${p.id}">💬 <span class="comment-count">${p.commentCount}</span> comments</button>
+        <button class="btn comment-toggle" style="background: transparent; border: 1px solid var(--border-color);" data-id="${p.id}">
+          💬 <span class="comment-count">${p.commentCount}</span> comments
+        </button>
         ${window.currentUser && window.currentUser.username === p.username ? `<button class="btn-danger-text delete-post" data-id="${p.id}">Delete</button>` : ''}
       </div>
       <div class="comments-section" id="comments-${p.id}">
@@ -83,12 +88,14 @@ async function loadFeed() {
   if (currentFeed === 'following') params.set('feed', 'following');
 
   const res = await fetch(`/api/posts?${params.toString()}`);
+  const data = await res.json();
+
   if (!res.ok) {
-    const data = await res.json();
     feedEl.innerHTML = `<div class="empty-state">${escapeHtml(data.error)}</div>`;
     return;
   }
-  const posts = await res.json();
+
+  const posts = data;
 
   if (posts.length === 0) {
     feedEl.innerHTML = `<div class="empty-state">Nothing here yet.</div>`;
@@ -109,7 +116,7 @@ function wireUpPostEvents() {
       if (!res.ok) return showAlert(data.error);
       btn.classList.toggle('liked', data.likedByMe);
       btn.querySelector('.like-count').textContent = data.likeCount;
-      btn.innerHTML = `${data.likedByMe ? '♥' : '♡'} <span class="like-count">${data.likeCount}</span>`;
+      btn.innerHTML = `${data.likedByMe ? '❤️' : '🤍'} <span class="like-count">${data.likeCount}</span>`;
     });
   });
 
@@ -147,9 +154,11 @@ function wireUpPostEvents() {
       if (!res.ok) return showAlert(data.error);
       input.value = '';
       await loadComments(id);
-      const card = document.querySelector(`.post-card[data-id="${id}"]`);
-      const countEl = card.querySelector('.comment-count');
-      countEl.textContent = Number(countEl.textContent) + 1;
+      const card = document.querySelector(`.card[data-id="${id}"]`);
+      if (card) {
+        const countEl = card.querySelector('.comment-count');
+        if (countEl) countEl.textContent = Number(countEl.textContent) + 1;
+      }
     });
   });
 }
