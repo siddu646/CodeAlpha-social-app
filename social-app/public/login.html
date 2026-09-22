@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in &mdash; Nook</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/index.html" class="brand">Nook</a>
+    <nav class="main-nav" id="nav-auth"></nav>
+  </div>
+</header>
+
+<div class="form-card">
+  <h1>Log in</h1>
+  <div id="form-alert"></div>
+  <form id="login-form">
+    <div class="field"><label for="username">Username or email</label><input type="text" id="username" required autofocus></div>
+    <div class="field"><label for="password">Password</label><input type="password" id="password" required></div>
+    <button type="submit" class="btn btn-primary btn-block">Log in</button>
+  </form>
+  <p class="form-note">New here? <a href="/register.html" style="text-decoration:underline;">Create an account</a></p>
+  <p class="form-note">Demo accounts: <b>alice</b> / <b>bram</b> / <b>chen</b>, password <b>password123</b></p>
+</div>
+
+<script src="/js/nav.js"></script>
+<script>
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const res = await fetch('/api/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      document.getElementById('form-alert').innerHTML = `<div class="alert alert-error">${escapeHtml(data.error)}</div>`;
+      return;
+    }
+    window.location.href = '/index.html';
+  });
+</script>
+</body>
+</html>
