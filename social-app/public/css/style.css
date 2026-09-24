@@ -1,13 +1,10 @@
-/* Base Reset & Variables */
 :root {
   --bg: #0b0f19;
   --card-bg: rgba(22, 28, 45, 0.75);
   --border: rgba(255, 255, 255, 0.12);
   --accent: #a855f7;
-  --accent-hover: #9333ea;
   --text: #f3f4f6;
   --text-muted: #9ca3af;
-  --radius: 16px;
 }
 
 * {
@@ -18,78 +15,41 @@
 
 body {
   background-color: var(--bg);
-  background-image: 
-    radial-gradient(at 20% 20%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
-    radial-gradient(at 80% 80%, rgba(59, 130, 246, 0.15) 0px, transparent 50%);
-  background-attachment: fixed;
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Header & Centered Bold Title */
 .site-header {
   width: 100%;
   padding: 1.5rem 0;
   border-bottom: 1px solid var(--border);
-  background: rgba(11, 15, 25, 0.6);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  background: rgba(11, 15, 25, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .header-inner {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  text-align: center;
 }
 
 .brand {
   font-size: 2.25rem;
-  font-weight: 800; /* Extra bold */
-  text-decoration: none;
+  font-weight: 800;
   color: #ffffff;
-  letter-spacing: -0.02em;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
-  transition: transform 0.2s ease;
-  display: inline-block;
-}
-
-.brand:hover {
-  transform: scale(1.03);
-}
-
-.main-nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.main-nav a, .main-nav button {
-  color: var(--text-muted);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s;
+  text-align: center;
+  display: block;
 }
 
-.main-nav a:hover, .main-nav button:hover {
-  color: var(--text);
-}
-
-/* Layout Container */
 .container {
   max-width: 680px;
   width: 100%;
@@ -98,41 +58,34 @@ body {
   flex: 1;
 }
 
-/* Glassmorphism Feed Tabs */
 .tabs {
   display: flex;
   gap: 0.5rem;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  padding: 0.35rem;
+  padding: 0.5rem;
   border-radius: 12px;
-  backdrop-filter: blur(10px);
 }
 
 .tab {
   flex: 1;
   text-align: center;
   padding: 0.6rem;
-  font-size: 0.9rem;
-  font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
   border-radius: 8px;
-  transition: all 0.2s ease;
 }
 
 .tab.active {
   background: var(--accent);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+  font-weight: 600;
 }
 
-/* Footer */
 .site-footer {
   border-top: 1px solid var(--border);
   padding: 1.5rem 0;
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-muted);
-  margin-top: auto;
 }
